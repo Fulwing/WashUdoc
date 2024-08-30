@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Next.js build output
+.next/
+out/
+build/
+
+# Static files
+/static
+/static-files
+
+# Nextra generated files
+.nextra/
+
+# Vercel
+.vercel/
+vercel.json
+
+# Tailwind CSS (if used)
+*.css
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local environment files
+.env.local
+.env.*.local
+
+# Next.js cache
+.next/cache
+
+# VS Code
+.vscode/

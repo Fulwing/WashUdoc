@@ -1,0 +1,231 @@
+import { Steps, Callout } from 'nextra/components'
+
+# Module 2 - 任务列表
+
+## 单人部分 (Individual Tasks)
+
+<Steps>
+### 第一步：了解 Linux (Learn About Linux)
+
+- 学习 [Linux](https://classes.engineering.wustl.edu/cse330/index.php?title=Linux) 的基础知识。
+- 学习 [Bash](https://classes.engineering.wustl.edu/cse330/index.php?title=Bash) 的基础知识。
+
+<Callout type="warning">
+  对于 Windows 用户，还需要启用 [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install) 或安装 [Cygwin](https://www.cygwin.com/)。
+</Callout>
+
+### 第二步：创建 AWS EC2 实例 (Create an AWS EC2 Instance)
+
+- [创建一个 AWS EC2 实例](https://classes.engineering.wustl.edu/cse330/index.php?title=Amazon_Web_Services)，为后续配置和开发做好准备。
+
+<Callout type="warning">
+  请一定记得在创建时下载并保存 `.pem` 密钥文件，这个密钥非常重要！如果你丢失了它，将无法通过 SSH 连接到你的实例。另外，确保在安全组中配置打开 22 端口，并将其设置为 0.0.0.0/0 以允许所有 IP 访问，这样你才能通过 SSH 连接到服务器。
+</Callout>
+
+### 第三步：配置 SSH (Configure SSH)
+
+- **任务描述**
+  - [配置 SSH](https://classes.engineering.wustl.edu/cse330/index.php?title=SSH) 以安全地连接到你的 AWS EC2 实例。
+
+<Callout>
+
+每次使用 SSH 登录时，不必像老师建议的那样使用完整的命令 `ssh <your-instance-username>@<ec2-xx-xx-xx-xx.compute-1.amazonaws.com>`。你可以通过配置 `.ssh/config` 文件来简化登录过程。以下是详细步骤：
+
+- 步骤：
+
+1. 打开你的本机终端并使用 `vi` 编辑器打开或创建 `~/.ssh/config` 文件：
+
+   ```bash
+   vi ~/.ssh/config
+   ```
+
+2. 在 `vi` 中，按 `i` 键进入插入模式，然后添加以下内容，替换 `<ec2-xx-xx-xx-xx.compute-1.amazonaws.com>` 为你的 EC2 实例的公共 DNS：
+
+   ```bash
+   Host my-ec2
+       HostName ec2-xx-xx-xx-xx.compute-1.amazonaws.com
+   ```
+
+   其中，`my-ec2` 是你可以自定义的别名，这样你以后只需要使用 `ssh my-ec2` 命令就可以登录到你的 EC2 实例。
+
+3. 按 `Esc` 键退出插入模式，然后输入 `:wq` 并按回车键保存并退出 `vi` 编辑器。
+
+4. 现在，你可以通过以下命令连接到你的 EC2 实例，而无需输入完整的命令：
+
+   ```bash
+   ssh username@my-ec2
+   ```
+
+- 进一步简化：
+
+如果你希望进一步简化登录过程，还可以在 `.ssh/config` 文件中添加你的用户名。这样你甚至不需要每次都输入用户名：
+
+   ```bash
+   Host my-ec2
+       HostName ec2-xx-xx-xx-xx.compute-1.amazonaws.com
+       User <your-instance-username>
+   ```
+
+配置完成后，你只需要输入以下命令即可登录到 EC2 实例：
+
+   ```bash
+   ssh my-ec2
+   ```
+
+这个配置不仅简化了命令，还增加了使用 SSH 的便捷性，特别是在频繁连接到多个服务器时非常有用。
+
+</Callout>
+
+
+### 第四步：安装必要的软件包 (Install Essential Packages)
+
+- 为了避免以后遇到不必要的麻烦，建议你在新建的 AWS EC2 Linux 实例时安装一些基本的包。这些软件包包括 Make 和 C 编译器等开发工具。
+
+- **安装步骤**（针对 RHEL 系统）：
+  - 使用以下命令安装开发工具包：
+
+    ```bash
+    $ sudo yum groupinstall "Development Tools"
+    $ sudo yum install kernel-devel kernel-headers
+    ```
+
+### 第五步：设置时区 (Set the Timezone)
+
+- 将实例的时区设置为芝加哥时间。你可以通过执行以下命令来实现：
+
+    ```bash
+    sudo cp /usr/share/zoneinfo/America/Chicago /etc/localtime
+    ```
+
+### 第六步：设置 Apache Web 服务器 (Set Up the Apache Web Server)
+
+- [安装并配置 Apache Web 服务器](https://classes.engineering.wustl.edu/cse330/index.php?title=Apache)，以便托管你的 Web 应用程序。
+
+<Callout>
+  这里当你测试 PHP 是否能直接访问文件时，不用像老师那样用 `http://ec2-xxx-xxx-xxx-xx.compute-1.amazonaws.com/~paul/` 这么长的域名。你可以直接使用 EC2 的公网地址。
+
+  ![EC2 公网地址示例](/module2/awsurl.png)
+
+  点击链接后，它会自动使用 HTTPS 链接。记得点击链接后将 HTTPS 改为 HTTP，因为目前我们只开放了 80 端口。这样的话，以后我们每次测试都只需要访问 `http://xx.xxx.xxx.xx`，而不用记那么长的一串域名。
+</Callout>
+
+### 第七步：安装 PHP (Install PHP)
+
+- **任务描述**
+  - 安装 PHP 8.2 并配置以支持动态 Web 应用程序开发。
+
+- **安装步骤**：
+  - 执行以下命令以安装 PHP 8.2：
+
+    ```bash
+    sudo yum install php
+    sudo service php-fpm start
+    ```
+
+  - 安装完成后，重启 Apache 使更改生效：
+
+    ```bash
+    sudo systemctl restart httpd
+    ```
+
+- **PHP 配置**：
+  - PHP 的配置文件名为 `php.ini`，在 RHEL 中，它位于 `/etc/php.ini`。
+
+  - 打开 `php.ini` 文件，找到并设置 `display_errors` 选项为 `On`。你可以使用 `vi` 编辑器来执行以下操作：
+
+    1. 使用 `vi` 打开 `php.ini` 文件：
+
+       ```bash
+       sudo vi /etc/php.ini
+       ```
+
+    2. 在 `vi` 中，按 `/` 键，然后输入 `display_errors`，按回车进行搜索。
+
+    3. 找到 `display_errors` 选项后，按 `i` 进入插入模式将其设置为 `On`：
+
+       ```bash
+       display_errors = On
+       ```
+
+    4. 按下 `Esc` 键，输入 `:wq` 并按回车保存并退出。
+
+  - 重启 Apache 使更改生效：
+
+    ```bash
+    sudo systemctl restart httpd
+    ```
+
+- **注意事项**：
+  - 你可以使用 `error_reporting()` 和 `ini_set()` 函数来在特定的 PHP 脚本中启用或禁用错误显示。
+  - 如果你让 PHP 记录错误，它们将存储在 Apache 错误日志文件中，路径为 `/var/log/php-fpm/www-error.log`。
+
+### 第八步：学习 PHP 语言 (Learn about the PHP Language)
+
+- [学习 PHP](https://classes.engineering.wustl.edu/cse330/index.php?title=PHP) 编程语言的基础知识。
+
+### 第九步：设置工作空间 (Set Up your Workspace)
+
+- [配置并整理你的开发工作空间](https://classes.engineering.wustl.edu/cse330/index.php?title=Workflow)，以便进行高效开发。
+
+### 第十步：实现计算器 (Calculator)
+
+- 好啦！用你刚刚学到的知识使用 PHP 实现一个基本的计算器，能够执行四则运算。
+
+### 第十一步：Git 教程 (Git Tutorial)
+
+- [完成 Git 教程](https://learngitbranching.js.org/)，并将学习成果提交到你的 GitHub 仓库中。
+
+</Steps>
+
+<Callout type="info">
+  推荐阅读老师发的[网络安全第一部分](https://classes.engineering.wustl.edu/cse330/index.php?title=Web_Application_Security,_Part_1)
+</Callout>
+
+## 评分标准 (Grading)
+
+### 云实例和 Web 服务器 (Cloud Instance and Web Server) - 30 分
+
+- **SSH 连接**  
+  - 你可以使用自定义的用户名和 SSH 密钥登录到你的实例。将终端 SSH 到实例的截图放入你的仓库中（15 分）。
+
+- **SUDO 命令**  
+  - 你的自定义用户名能够执行 SUDO 命令。将成功执行 SUDO 命令的截图放入你的仓库中（5 分）。
+
+- **时区设置**  
+  - 实例的时区设置正确。将执行 `date` 命令的结果截图放入你的仓库中（5 分）。
+
+- **UserDir Apache 模块**  
+  - UserDir Apache 模块工作正常。在 `/home/<username>/public_html` 中放置一个文件，并在你的 README.md 中链接到该文件（5 分）。
+
+### PHP 计算器 (PHP Calculator) - 15 分
+
+- **功能实现**  
+  - 计算器能够执行四则运算，并支持浮点数计算（每项功能 2 分，总计 8 分）。
+
+- **选择功能**  
+  - 每个功能通过单选按钮选择（4 分）。
+
+- **HTML 验证**  
+  - 计算器页面通过 W3C HTML 验证（3 分）。
+
+- **README 链接**  
+  - 在你的个人仓库的 README.md 文件中包含指向你实例上计算器的链接。
+
+### Git 教程 (Git Tutorial) - 20 分
+
+- **完成全部main和remote的教程**  
+  - 在你的个人作业仓库中放置两张截图，展示你完成了 Main 和 Remote 部分的所有关卡。
+
+<Callout type="warning">
+  请确保在作业截止时间前将代码提交到 GitHub。尽早并频繁提交代码，否则将导致评分为 0。
+</Callout>
+
+## 多人部分 (Group Tasks)
+
+<Callout type="info">
+  请注意：在多人部分中，每个小组成员都需要积极参与，并且在提交最终作品时注明各自的贡献。
+</Callout>
+
+<Callout type="error" emoji="️🚫">
+  开发中~
+</Callout>

@@ -24,8 +24,7 @@ import { Steps, Callout } from 'nextra/components'
 
 ### 第三步：配置 SSH (Configure SSH)
 
-- **任务描述**
-  - [配置 SSH](https://classes.engineering.wustl.edu/cse330/index.php?title=SSH) 以安全地连接到你的 AWS EC2 实例。
+- [配置 SSH](https://classes.engineering.wustl.edu/cse330/index.php?title=SSH) 以安全地连接到你的 AWS EC2 实例。
 
 <Callout>
 
@@ -76,6 +75,20 @@ import { Steps, Callout } from 'nextra/components'
 
 </Callout>
 
+<Callout type="warning" emoji="⚠️">
+    完成教程里所有的权限设置后登录自己的账户(不是root账户), 记得使用一次 sudo 命令 证明自己权限设置正确并截图放在自己的 github repo 里
+
+    任意sudo 指令都行比如说
+    ```bash
+    sudo -v
+    ```
+    或者
+    ```bash
+    sudo ls
+    ```
+    用一个自己喜欢的吧~
+</Callout>
+
 
 ### 第四步：安装必要的软件包 (Install Essential Packages)
 
@@ -97,6 +110,13 @@ import { Steps, Callout } from 'nextra/components'
     sudo cp /usr/share/zoneinfo/America/Chicago /etc/localtime
     ```
 
+<Callout type="warning" emoji="⚠️">
+    设置完成后 使用date指令并且把结果截图放到自己 github repo 里
+    ```bash
+    date
+    ```
+</Callout>
+
 ### 第六步：设置 Apache Web 服务器 (Set Up the Apache Web Server)
 
 - [安装并配置 Apache Web 服务器](https://classes.engineering.wustl.edu/cse330/index.php?title=Apache)，以便托管你的 Web 应用程序。
@@ -111,8 +131,7 @@ import { Steps, Callout } from 'nextra/components'
 
 ### 第七步：安装 PHP (Install PHP)
 
-- **任务描述**
-  - 安装 PHP 8.2 并配置以支持动态 Web 应用程序开发。
+- 安装 PHP 8.2 并配置以支持动态 Web 应用程序开发。
 
 - **安装步骤**：
   - 执行以下命令以安装 PHP 8.2：
@@ -171,9 +190,17 @@ import { Steps, Callout } from 'nextra/components'
 
 - 好啦！用你刚刚学到的知识使用 PHP 实现一个基本的计算器，能够执行四则运算。
 
+<Callout type="warning" emoji="⚠️">
+  写完记得复制输出后的html代码在 [W3C](https://validator.w3.org/#validate_by_input) 检查一下哦
+</Callout>
+
 ### 第十一步：Git 教程 (Git Tutorial)
 
 - [完成 Git 教程](https://learngitbranching.js.org/)，并将学习成果提交到你的 GitHub 仓库中。
+
+<Callout type="warning" emoji="⚠️">
+  分别给 main 和 remote 的结果截图放进你的 github repo 就好啦
+</Callout>
 
 </Steps>
 
@@ -181,7 +208,7 @@ import { Steps, Callout } from 'nextra/components'
   推荐阅读老师发的[网络安全第一部分](https://classes.engineering.wustl.edu/cse330/index.php?title=Web_Application_Security,_Part_1)
 </Callout>
 
-## 评分标准 (Grading)
+## 个人项目评分标准 (Grading)
 
 ### 云实例和 Web 服务器 (Cloud Instance and Web Server) - 30 分
 
@@ -217,15 +244,200 @@ import { Steps, Callout } from 'nextra/components'
   - 在你的个人作业仓库中放置两张截图，展示你完成了 Main 和 Remote 部分的所有关卡。
 
 <Callout type="warning">
-  请确保在作业截止时间前将代码提交到 GitHub。尽早并频繁提交代码，否则将导致评分为 0。
+  请确保在作业截止时间前将代码提交到 GitHub。尽早并频繁提交代码。
 </Callout>
 
 ## 多人部分 (Group Tasks)
 
 <Callout type="info">
-  请注意：在多人部分中，每个小组成员都需要积极参与，并且在提交最终作品时注明各自的贡献。
+  请注意：在多人部分中，每个小组成员都需要积极参与。请务必在个人部分完成后再开始小组任务，因为这将使你的开发过程更加顺畅。
 </Callout>
 
-<Callout type="error" emoji="️🚫">
-  开发中~
+### 第一步：项目介绍 (Project Overview)
+
+- 与另一位同学合作，完成一个简单的文件共享网站。该网站应支持文件的上传、查看和删除功能。
+
+### 第二步：设置用户文件 (Set Up User Files)
+
+- 在服务器的安全位置创建一个名为 `users.txt` 的文件。该文件应包含至少三个用户名，每行一个用户名。
+  
+- **注意事项**：
+  - 不需要为用户设置密码，密码加密将在模块 3 中介绍。
+  - 用户可以通过输入用户名登录系统。
+
+<Callout type="warning" emoji="⚠️">
+  将 `users.txt` 文件放在服务器的安全位置，确保其无法通过网站直接访问。避免将其放在 `public_html` 目录中。
+</Callout>
+
+### 第三步：实现登录和注销功能 (Implement Login and Logout Functionality)
+
+- **任务描述**：实现用户登录和注销功能。用户登录后应能够看到与其用户名关联的所有文件列表，并且能够安全地注销。
+
+- **实现方式**：
+  - 登录功能：用户可以通过输入用户名登录系统，成功登录后，系统应显示与该用户名关联的所有文件。
+  - 注销功能：用户可以选择注销，注销后sessions应被销毁，用户信息从sessions中清除，并重定向到登录页面。
+
+<Callout>
+  建议使用 sessions 在页面之间传递用户信息，因为在模块 3 中将要求使用 sessions。如果可能的话，现在就开始使用 sessions，以便后续开发更加顺畅。
+  
+  确保在用户注销时销毁sessions以确保安全，并防止未授权的访问。
+</Callout>
+
+### 第四步：文件操作功能 (File Operations)
+
+- 实现以下文件操作功能：
+  - **查看文件**：用户可以查看与其用户名关联的文件。
+  - **上传文件**：用户可以上传文件，并将其与自己的用户名关联。
+  - **删除文件**：用户可以删除与其用户名关联的文件。
+
+<Callout type="info">
+  确保 URI 不泄露网站的内部文件结构。例如：
+  - 错误示例：`http://www.example.com/download.php?file=/home/paul/file.txt`
+  - 正确示例：`http://www.example.com/view.php?user=music&name=file.txt`
+</Callout>
+
+<Callout type="warning" emoji="⚠️">
+  在查看文件功能中，确保不仅能够查看纯文本文件 (txt)，还要能够直接打开并浏览各种格式的文件，例如 PDF、PNG 文件等。功能的实现应当尽可能全面，以便用户可以方便地查看不同类型的文件。
+</Callout>
+
+### 第五步：权限设置 (Permission Settings)
+
+- 配置文件权限，以便 `apache` 用户和 PHP 脚本能够读取和写入必要的文件。
+
+- **详细步骤**：
+
+  1. **创建上传文件夹**：
+     - 首先，在服务器上创建一个用于存储用户上传文件的文件夹。为了安全起见，这个文件夹应当位于 `public_html` 文件夹之外。例如，可以创建一个名为 `uploadedfiles` 的文件夹：
+
+       ```bash
+       mkdir /path/to/uploadedfiles
+       ```
+
+     - 这里的 `/path/to/uploadedfiles` 是文件夹的完整路径，请根据你的实际需求替换为具体路径。
+
+  2. **更改文件夹权限**：
+     - 默认情况下，`apache` 用户没有权限访问 `public_html` 目录之外的文件夹。因此，我们需要使用 `chown` 命令将 `uploadedfiles` 文件夹的所有权更改为 `apache` 用户，使其具有读取和写入权限：
+
+       ```bash
+       sudo chown apache:apache /path/to/uploadedfiles
+       ```
+
+     - 该命令将文件夹的所有者更改为 `apache` 用户，同时将所属组更改为 `apache` 组。
+
+  3. **设置文件夹权限**：
+     - 为了确保 `apache` 用户可以在该文件夹中执行读取和写入操作，还需要调整文件夹的权限。使用 `chmod` 命令为文件夹赋予适当的权限：
+
+       ```bash
+       sudo chmod 755 /path/to/uploadedfiles
+       ```
+
+     - `755` 权限意味着文件夹的所有者（即 `apache` 用户）拥有读取、写入和执行权限，而组用户和其他用户仅具有读取和执行权限。这种权限设置可以确保 `apache` 用户能够管理文件，同时防止其他用户对文件进行写入操作。
+
+  4. **测试权限**：
+     - 完成上述步骤后，你可以通过模拟文件上传来测试权限设置。确保 PHP 脚本能够成功地将文件上传到 `uploadedfiles` 文件夹，并且 `apache` 用户可以读取和写入这些文件。
+
+<Callout type="info">
+  通过这种方式，你可以确保用户上传的文件安全存储在服务器上，同时保护网站的内部文件结构和敏感数据不被暴露。
+</Callout>
+
+
+### 第六步：创意功能 (Creative Feature)
+
+- 根据你的兴趣，为文件共享网站添加一两个额外的功能。例如：
+  - 文件搜索功能
+  - 按日期排序文件
+  - 文件预览功能
+
+老师推荐这个[链接](https://classes.engineering.wustl.edu/cse330/index.php?title=PHP#Other_PHP_Tips)可能有所帮助，当然你也可以自己查阅更多
+
+<Callout type="warning" emoji="⚠️">
+  请确保你设计的功能具有足够的难度，因为这一部分的分数占比很高。如果功能设计过于简单，将无法获得高分。如果不确定你设计的功能是否足够复杂，请提前与助教 (TA) 确认，以确保你的创意功能能够达到预期的评分标准。
+</Callout>
+
+### 第七步：Web 安全性和验证 (Web Security and Validation)
+
+- 确保你的项目遵循 [FIEO（过滤输入和转义输出）原则](https://classes.engineering.wustl.edu/cse330/index.php?title=Web_Application_Security,_Part_1)。你需要过滤的内容包括文件名、用户名等。
+
+<Callout type="warning" emoji="⚠️">
+  你的项目PHP输出后的html代码必须通过 W3C HTML 验证器的验证，并且没有错误或警告。请参考 [HTML 和 CSS 指南](https://classes.engineering.wustl.edu/cse330/index.php?title=HTML_and_CSS#Validation) 了解更多信息。
+</Callout>
+
+<Callout type="info">
+  推荐阅读本周的[Web 应用安全指南](https://classes.engineering.wustl.edu/cse330/index.php?title=Web_Application_Security,_Part_1)。
+</Callout>
+
+### 第八步：提交 (Submission)
+
+- 在 GitHub 仓库中提交所有代码和截图。
+
+请确保在你的组仓库中有一个 README.md 文件，内容包括：
+
+- 你们文件共享网站的链接。
+- 你为创意部分所做工作的简要描述。
+- 任何 TA 需要的额外登录信息。
+
+<Callout type="info">
+  `.md` 文件是一个纯文本文件，称为 Markdown 文件。其内容将在你的仓库页面上显示，使评分更加便捷。你可以使用粗体、超链接、图片、块引用和列表来样式化页面。这个[在线 Markdown 编辑器](https://dillinger.io/)可以帮助你学习这种格式。
+</Callout>
+
+## 多人项目评分标准 (Grading)
+
+### 文件共享网站 (File Sharing Site) - 40 分
+
+#### 文件管理 (File Management) - 25 分
+
+- **用户登录前无法查看文件**：用户在输入用户名并登录前不应看到任何文件（4 分）。
+
+<Callout type="warning" emoji="⚠️">
+  `users.txt` 文件应存储在文件系统的安全位置，确保无法通过在浏览器中输入任何 URL 直接查看该文件的原始内容。
+</Callout>
+
+- **文件列表**：用户可以查看他们上传的所有文件列表（4 分）。
+
+- **文件查看**：用户可以打开他们之前上传的文件（5 分）。
+
+<Callout type="warning" emoji="⚠️">
+  用户应能够打开不仅是纯文本文件，还应包括其他格式的文件，如图片、电子表格等。
+</Callout>
+
+- **文件上传**：用户可以上传文件，并将其与自己的用户名关联（4 分）。
+
+<Callout type="warning" emoji="⚠️">
+  与 `users.txt` 一样，上传的文件应存储在文件系统的安全位置，避免将上传目录放在 Apache 服务的目录下。
+</Callout>
+
+- **文件删除**：用户可以删除文件。如果文件被"删除"，它应当从文件系统中实际移除（4 分）。
+
+- **隐藏目录结构**：用户不应通过操纵 URL 访问或查看文件（2 分）。
+
+- **用户注销**：用户可以注销（2 分）。
+
+<Callout type="warning" emoji="⚠️">
+  如果使用sessions变量，必须通过销毁sessions实际注销用户；即不仅仅是重定向到登录页面。
+</Callout>
+
+#### 最佳实践 (Best Practices) - 10 分
+
+- **代码格式良好且易于阅读**：代码格式良好，易于阅读，并有适当的注释（4 分）。
+
+- **遵循 FIEO 原则**：网站遵循 FIEO（过滤输入和转义输出）原则（3 分）。
+
+- **所有页面通过 W3C 验证**：所有页面都通过 W3C 验证器验证，没有错误或警告（3 分）。
+
+#### 可用性 (Usability) - 5 分
+
+- **网站易于使用和导航**：网站直观易用，导航方便（4 分）。
+
+- **网站视觉吸引力**：网站具有视觉吸引力（1 分）。
+
+### 创意部分 (Creative Portion) - 15 分
+
+- **任务描述**：根据你的兴趣，为文件共享网站添加一两个额外的功能。你可以在 README.md 文件中简要描述你为创意部分所做的工作。
+
+  <Callout type="warning" emoji="⚠️">
+    请确保你设计的功能具有足够的难度，因为这一部分的分数占比很高。如果功能设计过于简单，将无法获得高分。如果不确定你设计的功能是否足够复杂，请提前与助教 (TA) 确认，以确保你的创意功能能够达到预期的评分标准。
+  </Callout>
+
+<Callout type="warning">
+  请确保在作业截止时间前将代码提交到 GitHub。尽早并频繁提交代码。
 </Callout>

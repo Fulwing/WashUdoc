@@ -34,13 +34,13 @@ import { Steps, Callout } from 'nextra/components'
 
 1. 打开你的本机终端并使用 `vi` 编辑器打开或创建 `~/.ssh/config` 文件：
 
-   ```bash
+   ```bash copy
    vi ~/.ssh/config
    ```
 
 2. 在 `vi` 中，按 `i` 键进入插入模式，然后添加以下内容，替换 `<ec2-xx-xx-xx-xx.compute-1.amazonaws.com>` 为你的 EC2 实例的公共 DNS：
 
-   ```bash
+   ```bash copy
    Host my-ec2
        HostName ec2-xx-xx-xx-xx.compute-1.amazonaws.com
    ```
@@ -51,7 +51,7 @@ import { Steps, Callout } from 'nextra/components'
 
 4. 现在，你可以通过以下命令连接到你的 EC2 实例，而无需输入完整的命令：
 
-   ```bash
+   ```bash copy
    ssh username@my-ec2
    ```
 
@@ -59,7 +59,7 @@ import { Steps, Callout } from 'nextra/components'
 
 如果你希望进一步简化登录过程，还可以在 `.ssh/config` 文件中添加你的用户名。这样你甚至不需要每次都输入用户名：
 
-   ```bash
+   ```bash copy
    Host my-ec2
        HostName ec2-xx-xx-xx-xx.compute-1.amazonaws.com
        User <your-instance-username>
@@ -67,7 +67,7 @@ import { Steps, Callout } from 'nextra/components'
 
 配置完成后，你只需要输入以下命令即可登录到 EC2 实例：
 
-   ```bash
+   ```bash copy
    ssh my-ec2
    ```
 
@@ -79,11 +79,11 @@ import { Steps, Callout } from 'nextra/components'
     完成教程里所有的权限设置后登录自己的账户(不是root账户), 记得使用一次 sudo 命令 证明自己权限设置正确并截图放在自己的 github repo 里
 
     任意sudo 指令都行比如说
-    ```bash
+    ```bash copy
     sudo -v
     ```
     或者
-    ```bash
+    ```bash copy
     sudo ls
     ```
     用一个自己喜欢的吧~
@@ -97,7 +97,7 @@ import { Steps, Callout } from 'nextra/components'
 - **安装步骤**（针对 RHEL 系统）：
   - 使用以下命令安装开发工具包：
 
-    ```bash
+    ```bash copy
     $ sudo yum groupinstall "Development Tools"
     $ sudo yum install kernel-devel kernel-headers
     ```
@@ -106,13 +106,13 @@ import { Steps, Callout } from 'nextra/components'
 
 - 将实例的时区设置为芝加哥时间。你可以通过执行以下命令来实现：
 
-    ```bash
+    ```bash copy
     sudo cp /usr/share/zoneinfo/America/Chicago /etc/localtime
     ```
 
 <Callout type="warning" emoji="⚠️">
     设置完成后 使用date指令并且把结果截图放到自己 github repo 里
-    ```bash
+    ```bash copy
     date
     ```
 </Callout>
@@ -144,14 +144,14 @@ import { Steps, Callout } from 'nextra/components'
 - **安装步骤**：
   - 执行以下命令以安装 PHP 8.2：
 
-    ```bash
+    ```bash copy
     sudo yum install php
     sudo service php-fpm start
     ```
 
   - 安装完成后，重启 Apache 使更改生效：
 
-    ```bash
+    ```bash copy
     sudo systemctl restart httpd
     ```
 
@@ -162,7 +162,7 @@ import { Steps, Callout } from 'nextra/components'
 
     1. 使用 `vi` 打开 `php.ini` 文件：
 
-       ```bash
+       ```bash copy
        sudo vi /etc/php.ini
        ```
 
@@ -170,7 +170,7 @@ import { Steps, Callout } from 'nextra/components'
 
     3. 找到 `display_errors` 选项后，按 `i` 进入插入模式将其设置为 `On`：
 
-       ```bash
+       ```bash copy
        display_errors = On
        ```
 
@@ -178,7 +178,7 @@ import { Steps, Callout } from 'nextra/components'
 
   - 重启 Apache 使更改生效：
 
-    ```bash
+    ```bash copy
     sudo systemctl restart httpd
     ```
 
@@ -222,28 +222,28 @@ import { Steps, Callout } from 'nextra/components'
 
 ### 云实例和 Web 服务器 (Cloud Instance and Web Server) - 30 分
 
-- **SSH 连接**  
-  - 你可以使用自定义的用户名和 SSH 密钥登录到你的实例。将终端 SSH 到实例的截图放入你的仓库中（15 分）。
+- **SSH 连接 （15 分）**  
+  - 你可以使用自定义的用户名和 SSH 密钥登录到你的实例。将终端 SSH 到实例的截图放入你的仓库中。
 
-- **SUDO 命令**  
-  - 你的自定义用户名能够执行 SUDO 命令。将成功执行 SUDO 命令的截图放入你的仓库中（5 分）。
+- **SUDO 命令 （5 分）**  
+  - 你的自定义用户名能够执行 SUDO 命令。将成功执行 SUDO 命令的截图放入你的仓库中。
 
-- **时区设置**  
-  - 实例的时区设置正确。将执行 `date` 命令的结果截图放入你的仓库中（5 分）。
+- **时区设置 （5 分）**  
+  - 实例的时区设置正确。将执行 `date` 命令的结果截图放入你的仓库中。
 
-- **UserDir Apache 模块**  
-  - UserDir Apache 模块工作正常。在 `/home/<username>/public_html` 中放置一个文件，并在你的 README.md 中链接到该文件（5 分）。
+- **UserDir Apache 模块 （5 分）**  
+  - UserDir Apache 模块工作正常。在 `/home/<username>/public_html` 中放置一个文件，并在你的 README.md 中链接到该文件。
 
 ### PHP 计算器 (PHP Calculator) - 15 分
 
-- **功能实现**  
-  - 计算器能够执行四则运算，并支持浮点数计算（每项功能 2 分，总计 8 分）。
+- **功能实现 （每项功能 2 分，总计 8 分）**  
+  - 计算器能够执行四则运算，并支持浮点数计算。
 
-- **选择功能**  
-  - 每个功能通过单选按钮选择（4 分）。
+- **选择功能 （4 分）**  
+  - 每个功能通过单选按钮选择。
 
-- **HTML 验证**  
-  - 计算器页面通过 W3C HTML 验证（3 分）。
+- **HTML 验证 （3 分）**  
+  - 计算器页面通过 W3C HTML 验证。
 
 - **README 链接**  
   - 在你的个人仓库的 README.md 文件中包含指向你实例上计算器的链接。
@@ -319,7 +319,7 @@ import { Steps, Callout } from 'nextra/components'
   1. **创建上传文件夹**：
      - 首先，在服务器上创建一个用于存储用户上传文件的文件夹。为了安全起见，这个文件夹应当位于 `public_html` 文件夹之外。例如，可以创建一个名为 `uploadedfiles` 的文件夹：
 
-       ```bash
+       ```bash copy
        mkdir /path/to/uploadedfiles
        ```
 
@@ -328,7 +328,7 @@ import { Steps, Callout } from 'nextra/components'
   2. **更改文件夹权限**：
      - 默认情况下，`apache` 用户没有权限访问 `public_html` 目录之外的文件夹。因此，我们需要使用 `chown` 命令将 `uploadedfiles` 文件夹的所有权更改为 `apache` 用户，使其具有读取和写入权限：
 
-       ```bash
+       ```bash copy
        sudo chown apache:apache /path/to/uploadedfiles
        ```
 
@@ -337,7 +337,7 @@ import { Steps, Callout } from 'nextra/components'
   3. **设置文件夹权限**：
      - 为了确保 `apache` 用户可以在该文件夹中执行读取和写入操作，还需要调整文件夹的权限。使用 `chmod` 命令为文件夹赋予适当的权限：
 
-       ```bash
+       ```bash copy
        sudo chmod 755 /path/to/uploadedfiles
        ```
 

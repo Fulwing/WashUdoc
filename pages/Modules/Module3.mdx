@@ -1,0 +1,287 @@
+import { Steps, Callout } from 'nextra/components'
+
+# Module 3 - 任务列表
+
+## 单人部分 (Individual Tasks)
+
+<Steps>
+### 第一步：安装 MySQL 和 phpMyAdmin
+
+- 在 EC2 实例上 [安装](https://classes.engineering.wustl.edu/cse330/index.php?title=Introduction_to_MySQL#Managing_Databases) MySQL 和 phpMyAdmin，跟着老师的步骤走完。
+
+### 第二步：设置数据库
+
+- 创建一个名为 `wustl` 的数据库。
+
+```sql copy
+CREATE DATABASE wustl;
+```
+
+- 创建一个名为 `wustl_inst` 的用户，密码为 `wustl_pass`。并且刷新权限表以确保所有更改生效
+
+```sql copy
+CREATE USER 'wustl_inst'@'localhost' IDENTIFIED BY 'wustl_pass';
+GRANT ALL PRIVILEGES ON wustl.* TO 'wustl_inst'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+### 第三步：创建表
+
+<Callout type="warning">
+  使用 InnoDB 存储引擎创建所有表，以支持外键约束。如果需要，可以使用 `ALTER TABLE` 更改存储引擎。适当时定义字段为 `NOT NULL` 以避免插入不完整的数据。
+</Callout>
+
+- 请阅读 [MySQL Schema and State](https://classes.engineering.wustl.edu/cse330/index.php?title=MySQL_Schema_and_State) 这一节，学习所有sql语句。我会提供所有的sql语句，但是请不要直接复制粘贴，先自己写写看。
+
+<Callout>
+  当你有了myphpadmin只有可以直接在这里跑sql语句！不用再去终端跑sql语句啦 yay~
+
+  ![sql语句](/module3/sql.png)
+
+  点击上方的sql 把自己的sql语句放进去点 `Go` 就可以运行了，下方就可以看到运行结果，请注意这里点了 `Go` 之后是真的会影响你的数据库无论是插入还是删除修改操作都是会生效的，请谨慎使用!!!
+</Callout>
+#### `students` 表
+
+创建一个名为 `students` 的表，包含以下字段：
+
+- `id`：适当大小的无符号整数类型（例如 `INT UNSIGNED`）。
+- `first_name`：类型为 `VARCHAR(50)`。
+- `last_name`：类型为 `VARCHAR(50)`。
+- `email_address`：类型为 `VARCHAR(50)`。
+
+主键应为 `id` 字段。
+
+```sql
+CREATE TABLE students (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email_address VARCHAR(50) NOT NULL
+) ENGINE=InnoDB;
+```
+
+#### `departments` 表
+
+创建一个名为 `departments` 的表，包含以下字段：
+
+- `school_code`：类型为 `ENUM('L', 'B', 'A', 'F', 'E', 'T', 'I', 'W', 'S', 'U', 'M')`。
+- `dept_id`：适当大小的无符号整数类型（例如 `INT UNSIGNED`）。
+- `abbreviation`：类型为 `VARCHAR(9)`。
+- `dept_name`：类型为 `VARCHAR(200)`。
+
+主键应为 `school_code` 和 `dept_id` 字段。
+
+```sql
+CREATE TABLE departments (
+    school_code ENUM('L', 'B', 'A', 'F', 'E', 'T', 'I', 'W', 'S', 'U', 'M') NOT NULL,
+    dept_id INT UNSIGNED NOT NULL,
+    abbreviation VARCHAR(9) NOT NULL,
+    dept_name VARCHAR(200) NOT NULL,
+    PRIMARY KEY (school_code, dept_id)
+) ENGINE=InnoDB;
+```
+
+#### `courses` 表
+
+创建一个名为 `courses` 的表，包含以下字段：
+
+- `school_code`：类型为 `ENUM`（与 `departments` 表中的 `school_code` ENUM 相匹配）。
+- `dept_id`：与 `departments` 表中相同的整数类型。
+- `course_code`：类型为 `CHAR(5)`。
+- `name`：类型为 `VARCHAR(150)`。
+
+确保适当字段引用 `departments` 表的外键。选择合适的字段作为主键。
+
+```sql
+CREATE TABLE courses (
+    school_code ENUM('L', 'B', 'A', 'F', 'E', 'T', 'I', 'W', 'S', 'U', 'M') NOT NULL,
+    dept_id INT UNSIGNED NOT NULL,
+    course_code CHAR(5) NOT NULL,
+    name VARCHAR(150) NOT NULL,
+    PRIMARY KEY (school_code, dept_id, course_code),
+    FOREIGN KEY (school_code, dept_id) REFERENCES departments(school_code, dept_id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+```
+
+#### `grades` 表
+
+创建一个名为 `grades` 的表，包含以下字段：
+
+- `pk_grade_ID`：适当大小的无符号整数类型（例如 `BIGINT UNSIGNED`），设置为 `AUTO_INCREMENT` 并作为主键。
+- `student_id`：与 `students` 表中相同的整数类型。
+- `grade`：类型为 `DECIMAL(5,2)`。
+- `school_code`：类型为 `ENUM`。
+- `dept_id`：与其他表中相同的整数类型。
+- `course_code`：与 `courses` 表中相同的类型。
+
+将外键添加到 `students` 表和 `courses` 表。
+
+```sql
+CREATE TABLE grades (
+    pk_grade_ID BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    student_id INT UNSIGNED NOT NULL,
+    grade DECIMAL(5,2) NOT NULL,
+    school_code ENUM('L', 'B', 'A', 'F', 'E', 'T', 'I', 'W', 'S', 'U', 'M') NOT NULL,
+    dept_id INT UNSIGNED NOT NULL,
+    course_code CHAR(5) NOT NULL,
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+    FOREIGN KEY (school_code, dept_id, course_code) REFERENCES courses(school_code, dept_id, course_code) ON DELETE CASCADE
+) ENGINE=InnoDB;
+```
+
+<Callout type="info">
+  记得每一个表使用一次
+
+  ```sql copy
+  SHOW CREATE TABLENAME
+  ```
+
+  并且把你的表结构保存为 `tablename.sql` 文件，放进你的GitHub仓库以便老师检查
+</Callout>
+
+### 第四步：导入数据
+
+- 从以下文件下载并将数据加载到表中：
+
+<Callout>
+  这里建议使用我提供的文件，支持 myphpadmin 一键导入，老师的提供的需要你自己调整从服务器上导入。这里打开我准备的文件后右键保存为 txt 即可。
+</Callout>
+
+  - [students.txt](/module3/students_data.txt)
+  - [departments.txt](/module3/departments_data.txt)
+  - [courses.txt](/module3/courses_data.txt)
+  - [grades.txt](/module3/grades_data.txt)
+
+- 使用 phpMyAdmin 导入数据
+
+    - 打开 phpMyAdmin，选择你要导入的表，这里由于老师要求我们使用外键链接，所以需要按照顺序导入，`students` -> `departments` -> `courses` -> `grades`
+    ![选择表](/module3/table.png)
+
+    - 选择完表后点击上方的import 按钮
+    ![导入按钮](/module3/import.png)
+
+    - 上传我提供的对应的csv文件，Format 选择 `CSV`，然后点击 `Import` 按钮
+    ![上传文件](/module3/startimport.png)
+
+### 第五步：插入更多数据
+
+- 插入学校的课程 `CSE 330S`, `CSE 131`, 和 `CSE 260M`. 这里你可以思考以下如何找到 `department code`. 我把sql语句放在下面，如果实在想不出来的话再使用
+
+```sql
+SELECT school_code, dept_id, abbreviation, dept_name
+FROM departments
+WHERE abbreviation = 'CSE';
+```
+
+- 插入老师提供的[这些数据](https://classes.engineering.wustl.edu/cse330/index.php/Module_3#Insert_More_Data)，老师说到的这些数据不在一个表内，所以我们需要在对应的表里使用插入语句，这里有外键限制所以需要按顺序插入哦~ 这里同样建议先尝试自己写一下再使用我的sql语句。
+
+    - 插入课程数据
+    ```sql
+    INSERT INTO course (school_code, dept_id, course_code, name)
+    VALUES 
+    ('E', '81', '330S', 'Rapid Prototype Development and Creative Programming'),
+    ('E', '81', '131', 'Introduction to Computer Science'),
+    ('E', '81', '260M', 'Introduction to Digital Logic and Computer Design');
+    ```
+
+    - 插入学生数据
+    ```sql
+    INSERT INTO students (id, first_name, last_name, email_address)
+    VALUES 
+    (88, 'Ben', 'Harper', 'bharper@ffym.com'),
+    (202, 'Matt', 'Freeman', 'mfreeman@kickinbassist.net'),
+    (115, 'Marc', 'Roberge', 'mroberge@ofarevolution.us');
+    ```
+
+    - 插入成绩数据
+    ```sql
+    INSERT INTO grades (student_id, grade, school_code, dept_id, course_code)
+    VALUES 
+    (88, 35.5, 'E', '81', '330S'),
+    (88, 0, 'E', '81', '131'),
+    (88, 95, 'E', '81', '260M'),
+    (202, 100, 'E', '81', '330S'),
+    (202, 90.5, 'E', '81', '131'),
+    (202, 94.8, 'E', '81', '260M'),
+    (115, 75, 'E', '81', '330S'),
+    (115, 37, 'E', '81', '131'),
+    (115, 45.5, 'E', '81', '260M');
+    ```
+
+### 第六步：查询数据
+
+- 运行[以下查询](https://classes.engineering.wustl.edu/cse330/index.php/Module_3#Querying_Your_Database)，并将结果保存到文本文件中（例如 query1.txt、query2.txt 等）这里总共有五个查询，所以总共要提交五个txt到你的github仓库哦！同样的，请先试试再使用我都sql语句~
+
+    - 选择整个 grades 表
+
+    ```sql
+    SELECT * FROM grades;
+    ```
+
+    - 选择描述 College of Arts & Sciences（学校代码 L）提供的所有课程的字段
+
+    ```sql
+    SELECT * FROM courses 
+    WHERE school_code = 'L';
+    ```
+
+    - 列出所有学生的姓名、学生 ID 和 CSE330 成绩（涉及连接）
+
+    ```sql
+    SELECT students.first_name, students.last_name, grades.student_id, grades.grade
+    FROM students
+    JOIN grades ON students.id = grades.student_id
+    WHERE grades.course_code = '330S';
+    ```
+
+    - 列出平均成绩低于 50 的学生的姓名、电子邮件和平均成绩（使用聚合函数和 HAVING）
+
+    ```sql
+    SELECT students.first_name, students.last_name, students.email_address, AVG(grades.grade) AS average_grade
+    FROM students
+    JOIN grades ON students.id = grades.student_id
+    GROUP BY students.id
+    HAVING AVG(grades.grade) < 50;
+    ```
+
+    - 生成 Jack Johnson 的个人报告卡，仅显示他的学生 ID、电子邮件地址和平均成绩（使用连接和聚合函数)
+
+    <Callout type="warning">
+        这里要注意搜索要用名字而不是 `students.id`
+    </Callout>
+
+    ```sql
+    SELECT students.id, students.email_address, AVG(grades.grade) AS average_grade
+    FROM students
+    JOIN grades ON students.id = grades.student_id
+    WHERE students.first_name = 'Jack' AND students.last_name = 'Johnson'
+    GROUP BY students.id;
+    ```
+</Steps>
+
+## 个人项目评分标准 (Grading)
+
+### MySQL 查询 (MySQL Queries)- 25 分
+
+- **MySQL 服务器连接截图（2 分）**
+   - 在您的存储库中放入连接到 MySQL 服务器的终端截图。
+
+- **表字段和结构（8 分）**
+   - 确保表的字段，包括数据类型和外键，都是正确的。
+   - 通过提交包含 `SHOW CREATE TABLE` 命令输出的文本文件来演示表的结构。
+   - 每个表的文件应以 `tablename.sql` 的形式命名（例如，`students.sql`）。
+
+- **查询输出（15 分）**
+   - 每个查询的输出都是正确的，每个查询值 3 分。
+   - 通过提交包含查询的完整结果（包括查询及记录数）来演示查询的输出。
+   - 查询 1 的文件应命名为 `query1.txt`，查询 2 的文件应命名为 `query2.txt`，以此类推。
+
+<Callout type="warning">
+  请确保在作业截止时间前将代码提交到 GitHub。尽早并频繁提交代码, 不然可能导致评分为0。
+</Callout>
+
+## 多人部分 (Group Tasks)
+
+<Callout type="warning">
+  还在开发中请稍等~
+</Callout>

@@ -133,7 +133,7 @@ CREATE TABLE grades (
   记得每一个表使用一次
 
   ```sql copy
-  SHOW CREATE TABLENAME
+  SHOW CREATE TABLE <TableName>
   ```
 
   并且把你的表结构保存为 `tablename.sql` 文件，放进你的GitHub仓库以便老师检查
@@ -268,7 +268,7 @@ WHERE abbreviation = 'CSE';
 
 - **表字段和结构（8 分）**
    - 确保表的字段，包括数据类型和外键，都是正确的。
-   - 通过提交包含 `SHOW CREATE TABLE` 命令输出的文本文件来演示表的结构。
+   - 通过提交包含 `SHOW CREATE TABLE <TableName>` 命令输出的文本文件来演示表的结构。
    - 每个表的文件应以 `tablename.sql` 的形式命名（例如，`students.sql`）。
 
 - **查询输出（15 分）**
@@ -352,7 +352,7 @@ WHERE abbreviation = 'CSE';
    - 数据库配置正确，包括数据类型和外键。
 
 <Callout type="warning">
-  记得提交一个 使用 `SHOW CREATE TABLE` 命令输出的 `tables.sql` 文件，展示所有表的结构
+  记得提交一个 使用 `SHOW CREATE TABLE <TableName>` 命令输出的 `tables.sql` 文件，展示所有表的结构
 </Callout>
 
 - **故事发布（3 分）**

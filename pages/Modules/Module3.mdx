@@ -177,7 +177,7 @@ WHERE abbreviation = 'CSE';
 
     - 插入课程数据
     ```sql
-    INSERT INTO course (school_code, dept_id, course_code, name)
+    INSERT INTO courses (school_code, dept_id, course_code, name)
     VALUES 
     ('E', '81', '330S', 'Rapid Prototype Development and Creative Programming'),
     ('E', '81', '131', 'Introduction to Computer Science'),
@@ -350,7 +350,6 @@ WHERE abbreviation = 'CSE';
 
 - **数据库结构（4 分）**
    - 数据库配置正确，包括数据类型和外键。
-   - 提交包含所有表结构的 `tables.sql` 文件。
 
 <Callout type="warning">
   记得提交一个 使用 `SHOW CREATE TABLE` 命令输出的 `tables.sql` 文件，展示所有表的结构

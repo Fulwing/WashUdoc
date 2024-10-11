@@ -40,10 +40,11 @@ import { Steps, Callout } from 'nextra/components'
   - 元音字母有 `a、e、i、o、u`。
   - 使用字符类 `[aeiouAEIOU]` 匹配任意一个元音字母。
   - 使用量词 `{3,}` 表示匹配三个或更多。
+  - 使用 `\w*` 去匹配连续元音前后的 0 到更多个字母
 
   **答案：**
   ```regex copy
-  [aeiouAEIOU]{3,}
+  \w*[aeiouAEIOU]{3,}\w*
   ```
 
 - **正则表达式 3**

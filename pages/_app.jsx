@@ -1,7 +1,7 @@
 import { ThemeProvider } from 'next-themes'
 import { Analytics } from '@vercel/analytics/react';
 
-function MyApp({ Component, pageProps }) {
+function App({ Component, pageProps }) {
   return (
     <ThemeProvider>
       <Component {...pageProps} />
@@ -10,4 +10,4 @@ function MyApp({ Component, pageProps }) {
   )
 }
 
-export default MyApp
+export default App

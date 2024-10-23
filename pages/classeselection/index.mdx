@@ -1,0 +1,43 @@
+import { Cards } from 'nextra/components'
+
+export default function ClassSelectionPage() {
+  return (
+    <div>
+      <h1>选择你的课程</h1>
+      
+      {/* CSE Classes Section */}
+      <h2>CSE Classes</h2>
+      <Cards>
+        <Cards.Card
+          title="CSE 330: Rapid Prototype Development and Creative Programming"
+          href="/CSE330"
+        />
+        <Cards.Card
+          title="CSE 442: Introduction to Cryptography"
+          href="/CSE442"
+        />
+        <Cards.Card
+          title="CSE 247: Data Structures and Algorithms"
+          href="/CSE247"
+        />
+      </Cards>
+
+      {/* Math Classes Section */}
+      <h2>Math Classes</h2>
+      <Cards>
+        <Cards.Card
+          title="Math 429: Linear Algebra"
+          href="/Math429"
+        />
+        <Cards.Card
+          title="Math 4111: Real Analysis"
+          href="/Math4111"
+        />
+        <Cards.Card
+          title="Math 3200: Elementary to Intermediate Statistics"
+          href="/Math3200"
+        />
+      </Cards>
+    </div>
+  )
+}

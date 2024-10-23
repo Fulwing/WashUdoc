@@ -1,7 +1,7 @@
 export default {
-    logo: <span>CSE330 Helper Documentation</span>,
+    logo: <span>WashU Helper Documentation</span>,
     project: {
-        link: 'https://github.com/Fulwing/cse330doc'
+        link: 'https://github.com/Fulwing/washudoc'
     },
     feedback: {
         content: '有问题？那就提出来吧',
@@ -13,14 +13,14 @@ export default {
     },
     useNextSeoProps() {
         return {
-            titleTemplate: '%s - CSE330'
+            titleTemplate: '%s - WashU Helper'
         }
     },
     logo: (
         <>
-            <img src="/icon/doc-.png" alt="CSE330 Helper Guide" width="24" height="24" />
+            <img src="/icon/doc-.png" alt="WashU Helper Guide" width="24" height="24" />
             <span style={{ marginLeft: '.4em', fontWeight: 800 }}>
-                CSE330 Helper Guide
+                WashU Helper Guide
             </span>
         </>
     ),
@@ -39,5 +39,12 @@ export default {
                 .
             </span>
         )
+    },
+    banner: {
+        key: 'release',
+        dismissible: true,
+        text: (
+            <p>🎉 从330转为WashU帮助手册啦! </p>
+        ),
     }
-}
+};

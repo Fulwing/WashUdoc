@@ -36,7 +36,7 @@ FLUSH PRIVILEGES;
 <Callout>
   当你有了myphpadmin只有可以直接在这里跑sql语句！不用再去终端跑sql语句啦 yay~
 
-  ![sql语句](/module3/sql.png)
+  ![sql语句](/cse330/module3/sql.png)
 
   点击上方的sql 把自己的sql语句放进去点 `Go` 就可以运行了，下方就可以看到运行结果，请注意这里点了 `Go` 之后是真的会影响你的数据库无论是插入还是删除修改操作都是会生效的，请谨慎使用!!!
 </Callout>
@@ -44,7 +44,7 @@ FLUSH PRIVILEGES;
 
 创建一个名为 `students` 的表，包含以下字段：
 
-- `id`：适当大小的无符号整数类型（例如 `INT UNSIGNED`）。
+- `id`：适当大小的无符号整数类型（例如 `MEDIUMINT UNSIGNED`）。
 - `first_name`：类型为 `VARCHAR(50)`。
 - `last_name`：类型为 `VARCHAR(50)`。
 - `email_address`：类型为 `VARCHAR(50)`。
@@ -53,7 +53,7 @@ FLUSH PRIVILEGES;
 
 ```sql
 CREATE TABLE students (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id MEDIUMINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     email_address VARCHAR(50) NOT NULL
@@ -65,7 +65,7 @@ CREATE TABLE students (
 创建一个名为 `departments` 的表，包含以下字段：
 
 - `school_code`：类型为 `ENUM('L', 'B', 'A', 'F', 'E', 'T', 'I', 'W', 'S', 'U', 'M')`。
-- `dept_id`：适当大小的无符号整数类型（例如 `INT UNSIGNED`）。
+- `dept_id`：适当大小的无符号整数类型（例如 `SMALLINT UNSIGNED`）。
 - `abbreviation`：类型为 `VARCHAR(9)`。
 - `dept_name`：类型为 `VARCHAR(200)`。
 
@@ -74,7 +74,7 @@ CREATE TABLE students (
 ```sql
 CREATE TABLE departments (
     school_code ENUM('L', 'B', 'A', 'F', 'E', 'T', 'I', 'W', 'S', 'U', 'M') NOT NULL,
-    dept_id INT UNSIGNED NOT NULL,
+    dept_id SMALLINT UNSIGNED NOT NULL,
     abbreviation VARCHAR(9) NOT NULL,
     dept_name VARCHAR(200) NOT NULL,
     PRIMARY KEY (school_code, dept_id)
@@ -95,7 +95,7 @@ CREATE TABLE departments (
 ```sql
 CREATE TABLE courses (
     school_code ENUM('L', 'B', 'A', 'F', 'E', 'T', 'I', 'W', 'S', 'U', 'M') NOT NULL,
-    dept_id INT UNSIGNED NOT NULL,
+    dept_id SMALLINT UNSIGNED NOT NULL,
     course_code CHAR(5) NOT NULL,
     name VARCHAR(150) NOT NULL,
     PRIMARY KEY (school_code, dept_id, course_code),
@@ -107,7 +107,7 @@ CREATE TABLE courses (
 
 创建一个名为 `grades` 的表，包含以下字段：
 
-- `pk_grade_ID`：适当大小的无符号整数类型（例如 `BIGINT UNSIGNED`），设置为 `AUTO_INCREMENT` 并作为主键。
+- `pk_grade_ID`：适当大小的无符号整数类型（例如 `INT UNSIGNED`），设置为 `AUTO_INCREMENT` 并作为主键。
 - `student_id`：与 `students` 表中相同的整数类型。
 - `grade`：类型为 `DECIMAL(5,2)`。
 - `school_code`：类型为 `ENUM`。
@@ -118,11 +118,11 @@ CREATE TABLE courses (
 
 ```sql
 CREATE TABLE grades (
-    pk_grade_ID BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    student_id INT UNSIGNED NOT NULL,
+    pk_grade_ID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    student_id MEDIUMINT UNSIGNED NOT NULL,
     grade DECIMAL(5,2) NOT NULL,
     school_code ENUM('L', 'B', 'A', 'F', 'E', 'T', 'I', 'W', 'S', 'U', 'M') NOT NULL,
-    dept_id INT UNSIGNED NOT NULL,
+    dept_id SMALLINT UNSIGNED NOT NULL,
     course_code CHAR(5) NOT NULL,
     FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
     FOREIGN KEY (school_code, dept_id, course_code) REFERENCES courses(school_code, dept_id, course_code) ON DELETE CASCADE
@@ -155,13 +155,13 @@ CREATE TABLE grades (
 - 使用 phpMyAdmin 导入数据
 
     - 打开 phpMyAdmin，选择你要导入的表，这里由于老师要求我们使用外键链接，所以需要按照顺序导入，`students` -> `departments` -> `courses` -> `grades`
-    ![选择表](/module3/table.png)
+    ![选择表](/cse330/module3/table.png)
 
     - 选择完表后点击上方的import 按钮
-    ![导入按钮](/module3/import.png)
+    ![导入按钮](/cse330/module3/import.png)
 
     - 上传我提供的对应的csv文件，Format 选择 `CSV`，然后点击 `Import` 按钮
-    ![上传文件](/module3/startimport.png)
+    ![上传文件](/cse330/module3/startimport.png)
 
 ### 第五步：插入更多数据
 

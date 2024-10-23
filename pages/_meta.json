@@ -1,8 +1,40 @@
 {
-    "index": "简介",
-    "---": {
-        "type": "separator",
-        "title": "学习"
+    "index": {
+        "title": "首页",
+        "type": "page"
     },
-    "Modules": "模块"
+    "classeselection": {
+        "title": "课程列表",
+        "type": "page"
+    },
+    "CSE330": {
+        "title": "CSE330",
+        "type": "page",
+        "display": "hidden"
+    },
+    "CSE247": {
+        "title": "CSE247",
+        "type": "page",
+        "display": "hidden"
+    },
+    "CSE442": {
+        "title": "CSE442",
+        "type": "page",
+        "display": "hidden"
+    },
+    "Math429": {
+        "title": "Math429",
+        "type": "page",
+        "display": "hidden"
+    },
+    "Math4111": {
+        "title": "Math4111",
+        "type": "page",
+        "display": "hidden"
+    },
+    "Math3200": {
+        "title": "Math3200",
+        "type": "page",
+        "display": "hidden"
+    }
 }

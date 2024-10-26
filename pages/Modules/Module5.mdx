@@ -22,9 +22,7 @@ import { Steps, Callout } from 'nextra/components'
 4. 考虑如何获取当前选中的单选按钮的值。
 </Callout>
 
-#### 实施步骤：
-
-1. **创建基本的 HTML 结构**：
+#### 创建基本的 HTML 结构
 
    - 创建一个包含两个数字输入的表单。
    - 添加四个单选按钮，分别代表加、减、乘、除操作。
@@ -59,7 +57,7 @@ import { Steps, Callout } from 'nextra/components'
    </html>
    ```
 
-   编写 JavaScript 脚本：
+#### 编写 JavaScript 脚本
 
    使用 `document.addEventListener("DOMContentLoaded", function() { ... });` 确保脚本在页面加载后执行。
    获取输入字段和单选按钮的引用。
@@ -153,7 +151,7 @@ import { Steps, Callout } from 'nextra/components'
    <strong>提示：</strong> 如果遇到问题，使用 `console.log()` 在控制台中输出变量值，帮助调试代码。
    </Callout>
 
-2. **第二步：天气小部件 (Weather Widget)**
+### 第二步：天气小部件 (Weather Widget)
 
    **目标**：创建一个天气小部件，通过 AJAX 请求获取天气数据，并在页面上显示。
 
@@ -174,9 +172,7 @@ import { Steps, Callout } from 'nextra/components'
    - 使用事件监听器在页面加载和按钮点击时调用获取天气的函数。
    </Callout>
 
-   **实施步骤：**
-
-   **创建基础 HTML 文件：**
+   #### 创建基础 HTML 文件
 
    创建一个名为 `weather.html` 的文件。
 
@@ -209,7 +205,7 @@ import { Steps, Callout } from 'nextra/components'
    </html>
    ```
 
-   **编写 JavaScript 脚本：**
+   #### 编写 JavaScript 脚本
 
    在页面底部添加 `<script>` 标签，或者链接外部的 `weather.js` 文件。
 
@@ -275,7 +271,7 @@ import { Steps, Callout } from 'nextra/components'
    <strong>重要：</strong> 确保在支持 CORS 的环境下运行此代码，例如在本地主机或你的 EC2 实例上。浏览器可能会阻止跨域请求，导致无法获取数据。
    </Callout>
 
-   **了解 JSON 数据结构：**
+   #### 了解 JSON 数据结构
 
    天气服务器返回的 JSON 数据结构：
 
@@ -307,7 +303,7 @@ import { Steps, Callout } from 'nextra/components'
 
    需要特别关注 `location`、`atmosphere`、`current`、`tomorrow` 和 `dayafter` 部分。
 
-   **处理天气预报图片：**
+   #### 处理天气预报图片
 
    每个预报都有一个代码 `code`，对应的图片 URL 为：
 
@@ -323,7 +319,7 @@ import { Steps, Callout } from 'nextra/components'
    http://us.yimg.com/i/us/nws/weather/gr/29ds.png
    ```
 
-   **测试和调试：**
+   #### 测试和调试
 
    - 在浏览器中打开 `weather.html`，检查是否正确显示天气信息和图片。
    - 使用浏览器的开发者工具查看是否有任何错误，特别是网络请求是否成功。

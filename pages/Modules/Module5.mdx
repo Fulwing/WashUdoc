@@ -65,76 +65,75 @@ import { Steps, Callout } from 'nextra/components'
    添加事件监听器到输入字段和单选按钮，以在值改变时调用 `calculate()` 函数。
 
    ```javascript
-   <script>
    document.addEventListener("DOMContentLoaded", function() {
-       // 获取元素引用
-       var number1Input = document.getElementById('number1');
-       var number2Input = document.getElementById('number2');
-       var operationInputs = document.getElementsByName('operation');
-       var resultSpan = document.getElementById('result');
+    // 获取元素引用
+    const number1Input = document.getElementById('number1');
+    const number2Input = document.getElementById('number2');
+    const operationInputs = document.getElementsByName('operation');
+    const resultSpan = document.getElementById('result');
 
-       // 计算函数
-       function calculate() {
-           var num1 = parseFloat(number1Input.value);
-           var num2 = parseFloat(number2Input.value);
-           var operation;
+    // 计算函数
+    function calculate() {
+        const num1 = parseFloat(number1Input.value);
+        const num2 = parseFloat(number2Input.value);
+        let operation;
 
-           // 获取选中的操作
-           for (var i = 0; i < operationInputs.length; i++) {
-               if (operationInputs[i].checked) {
-                   operation = operationInputs[i].value;
-                   break;
-               }
-           }
+        // 获取选中的操作
+        for (let i = 0; i < operationInputs.length; i++) {
+            if (operationInputs[i].checked) {
+                operation = operationInputs[i].value;
+                break;
+            }
+        }
 
-           var result;
+        let result;
 
-           // 检查输入是否为有效数字
-           if (isNaN(num1) || isNaN(num2)) {
-               resultSpan.textContent = 'Please enter valid numbers.';
-               return;
-           }
+        // 检查输入是否为有效数字
+        if (isNaN(num1) || isNaN(num2)) {
+            resultSpan.textContent = 'Please enter valid numbers.';
+            return;
+        }
 
-           // 执行计算
-           switch (operation) {
-               case 'add':
-                   result = num1 + num2;
-                   break;
-               case 'subtract':
-                   result = num1 - num2;
-                   break;
-               case 'multiply':
-                   result = num1 * num2;
-                   break;
-               case 'divide':
-                   if (num2 === 0) {
-                       resultSpan.textContent = 'Cannot divide by zero.';
-                       return;
-                   } else {
-                       result = num1 / num2;
-                   }
-                   break;
-               default:
-                   resultSpan.textContent = 'Please select an operation.';
-                   return;
-           }
+        // 执行计算
+        switch (operation) {
+            case 'add':
+                result = num1 + num2;
+                break;
+            case 'subtract':
+                result = num1 - num2;
+                break;
+            case 'multiply':
+                result = num1 * num2;
+                break;
+            case 'divide':
+                if (num2 === 0) {
+                    resultSpan.textContent = 'Cannot divide by zero.';
+                    return;
+                } else {
+                    result = num1 / num2;
+                }
+                break;
+            default:
+                resultSpan.textContent = 'Please select an operation.';
+                return;
+        }
 
-           // 显示结果
-           resultSpan.textContent = result;
-       }
+        // 显示结果
+        resultSpan.textContent = result;
+    }
 
-       // 添加事件监听器
-       number1Input.addEventListener('input', calculate);
-       number2Input.addEventListener('input', calculate);
+    // 添加事件监听器
+    number1Input.addEventListener('input', calculate);
+    number2Input.addEventListener('input', calculate);
 
-       for (var i = 0; i < operationInputs.length; i++) {
-           operationInputs[i].addEventListener('change', calculate);
-       }
+    for (let i = 0; i < operationInputs.length; i++) {
+        operationInputs[i].addEventListener('change', calculate);
+    }
 
-       // 初始计算
-       calculate();
+    // 初始计算
+    calculate();
    });
-   </script>
+
    ```
 
    <Callout type="warning" emoji="⚠️">
@@ -212,59 +211,57 @@ import { Steps, Callout } from 'nextra/components'
    定义 `fetchWeather()` 函数，使用 `XMLHttpRequest` 对象进行 AJAX 请求。
 
    ```javascript
-   <script>
    document.addEventListener("DOMContentLoaded", function() {
-       function fetchWeather() {
-           var xhr = new XMLHttpRequest();
-           xhr.open('GET', 'https://classes.engineering.wustl.edu/cse330/content/weather_json.php', true);
-           xhr.onreadystatechange = function() {
-               if (xhr.readyState === 4) {
-                   if (xhr.status === 200) {
-                       var data = JSON.parse(xhr.responseText);
-                       updateWeatherWidget(data);
-                   } else {
-                       console.error('Error fetching weather data.');
-                   }
-               }
-           };
-           xhr.send();
-       }
+    function fetchWeather() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://classes.engineering.wustl.edu/cse330/content/weather_json.php', true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    const data = JSON.parse(xhr.responseText);
+                    updateWeatherWidget(data);
+                } else {
+                    console.error('Error fetching weather data.');
+                }
+            }
+        };
+        xhr.send();
+    }
 
-       function updateWeatherWidget(data) {
-           var locDiv = document.querySelector('.weather-loc');
-           var humidityDiv = document.querySelector('.weather-humidity');
-           var tempDiv = document.querySelector('.weather-temp');
-           var tomorrowImg = document.querySelector('.weather-tomorrow');
-           var dayAfterImg = document.querySelector('.weather-dayaftertomorrow');
+    function updateWeatherWidget(data) {
+        const locDiv = document.querySelector('.weather-loc');
+        const humidityDiv = document.querySelector('.weather-humidity');
+        const tempDiv = document.querySelector('.weather-temp');
+        const tomorrowImg = document.querySelector('.weather-tomorrow');
+        const dayAfterImg = document.querySelector('.weather-dayaftertomorrow');
 
-           // 更新位置
-           locDiv.innerHTML = '<strong>' + data.location.city + '</strong> ' + data.location.state;
+        // 更新位置
+        locDiv.innerHTML = `<strong>${data.location.city}</strong> ${data.location.state}`;
 
-           // 更新湿度
-           humidityDiv.textContent = 'Humidity: ' + data.atmosphere.humidity + '%';
+        // 更新湿度
+        humidityDiv.textContent = `Humidity: ${data.atmosphere.humidity}%`;
 
-           // 更新当前温度
-           tempDiv.textContent = 'Current Temperature: ' + data.current.temp;
+        // 更新当前温度
+        tempDiv.textContent = `Current Temperature: ${data.current.temp}`;
 
-           // 更新天气预报图片
-           var tomorrowCode = data.tomorrow.code;
-           var dayAfterCode = data.dayafter.code;
+        // 更新天气预报图片
+        const tomorrowCode = data.tomorrow.code;
+        const dayAfterCode = data.dayafter.code;
 
-           var tomorrowImgUrl = 'http://us.yimg.com/i/us/nws/weather/gr/' + tomorrowCode + 'ds.png';
-           var dayAfterImgUrl = 'http://us.yimg.com/i/us/nws/weather/gr/' + dayAfterCode + 'ds.png';
+        const tomorrowImgUrl = `http://us.yimg.com/i/us/nws/weather/gr/${tomorrowCode}ds.png`;
+        const dayAfterImgUrl = `http://us.yimg.com/i/us/nws/weather/gr/${dayAfterCode}ds.png`;
 
-           tomorrowImg.src = tomorrowImgUrl;
-           dayAfterImg.src = dayAfterImgUrl;
-       }
+        tomorrowImg.src = tomorrowImgUrl;
+        dayAfterImg.src = dayAfterImgUrl;
+    }
 
-       // 页面加载时获取天气数据
-       fetchWeather();
+    // 页面加载时获取天气数据
+    fetchWeather();
 
-       // 点击按钮时刷新天气数据
-       var refreshButton = document.getElementById('refreshButton');
-       refreshButton.addEventListener('click', fetchWeather);
+    // 点击按钮时刷新天气数据
+    const refreshButton = document.getElementById('refreshButton');
+    refreshButton.addEventListener('click', fetchWeather);
    });
-   </script>
    ```
 
    <Callout type="warning" emoji="⚠️">

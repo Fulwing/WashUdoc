@@ -1,0 +1,397 @@
+import { Steps, Callout } from 'nextra/components'
+
+# Module 5 - 任务列表
+
+## 单人部分 (Individual Tasks)
+
+<Steps>
+### 第一步：JavaScript 计算器 (JavaScript Calculator)
+
+- **目标**：创建一个基本的 JavaScript 计算器，能够执行四则运算（加、减、乘、除）。
+- **功能要求**：
+  - 两个输入字段用于输入数字。
+  - 一组单选按钮（Radio Buttons）用于选择运算操作。
+  - 实时监控输入和操作选择，自动更新计算结果，无需刷新页面。
+
+<Callout type="info">
+<strong>提示：</strong>
+
+1. 使用 `input` 事件监听文本字段的变化，例如 `keyup` 或 `input` 事件。
+2. 使用 `change` 事件监听单选按钮的变化。
+3. 确保在 JavaScript 中绑定事件监听器，而不是在 HTML 中使用内联事件处理程序。
+4. 考虑如何获取当前选中的单选按钮的值。
+</Callout>
+
+#### 实施步骤：
+
+1. **创建基本的 HTML 结构**：
+
+   - 创建一个包含两个数字输入的表单。
+   - 添加四个单选按钮，分别代表加、减、乘、除操作。
+   - 添加一个显示结果的区域，例如一个 `<span>` 或 `<div>`。
+
+   ```html
+   <!DOCTYPE html>
+   <html>
+   <head>
+       <title>JavaScript Calculator</title>
+   </head>
+   <body>
+       <h1>JavaScript Calculator</h1>
+       <label for="number1">Number 1:</label>
+       <input type="text" id="number1"><br><br>
+
+       <label for="number2">Number 2:</label>
+       <input type="text" id="number2"><br><br>
+
+       <label>Operation:</label><br>
+       <input type="radio" id="add" name="operation" value="add" checked>
+       <label for="add">Add</label><br>
+       <input type="radio" id="subtract" name="operation" value="subtract">
+       <label for="subtract">Subtract</label><br>
+       <input type="radio" id="multiply" name="operation" value="multiply">
+       <label for="multiply">Multiply</label><br>
+       <input type="radio" id="divide" name="operation" value="divide">
+       <label for="divide">Divide</label><br><br>
+
+       <p>Result: <span id="result"></span></p>
+   </body>
+   </html>
+   ```
+
+   编写 JavaScript 脚本：
+
+   使用 `document.addEventListener("DOMContentLoaded", function() { ... });` 确保脚本在页面加载后执行。
+   获取输入字段和单选按钮的引用。
+   编写一个 `calculate()` 函数，根据输入和选择的操作计算结果。
+   添加事件监听器到输入字段和单选按钮，以在值改变时调用 `calculate()` 函数。
+
+   ```javascript
+   <script>
+   document.addEventListener("DOMContentLoaded", function() {
+       // 获取元素引用
+       var number1Input = document.getElementById('number1');
+       var number2Input = document.getElementById('number2');
+       var operationInputs = document.getElementsByName('operation');
+       var resultSpan = document.getElementById('result');
+
+       // 计算函数
+       function calculate() {
+           var num1 = parseFloat(number1Input.value);
+           var num2 = parseFloat(number2Input.value);
+           var operation;
+
+           // 获取选中的操作
+           for (var i = 0; i < operationInputs.length; i++) {
+               if (operationInputs[i].checked) {
+                   operation = operationInputs[i].value;
+                   break;
+               }
+           }
+
+           var result;
+
+           // 检查输入是否为有效数字
+           if (isNaN(num1) || isNaN(num2)) {
+               resultSpan.textContent = 'Please enter valid numbers.';
+               return;
+           }
+
+           // 执行计算
+           switch (operation) {
+               case 'add':
+                   result = num1 + num2;
+                   break;
+               case 'subtract':
+                   result = num1 - num2;
+                   break;
+               case 'multiply':
+                   result = num1 * num2;
+                   break;
+               case 'divide':
+                   if (num2 === 0) {
+                       resultSpan.textContent = 'Cannot divide by zero.';
+                       return;
+                   } else {
+                       result = num1 / num2;
+                   }
+                   break;
+               default:
+                   resultSpan.textContent = 'Please select an operation.';
+                   return;
+           }
+
+           // 显示结果
+           resultSpan.textContent = result;
+       }
+
+       // 添加事件监听器
+       number1Input.addEventListener('input', calculate);
+       number2Input.addEventListener('input', calculate);
+
+       for (var i = 0; i < operationInputs.length; i++) {
+           operationInputs[i].addEventListener('change', calculate);
+       }
+
+       // 初始计算
+       calculate();
+   });
+   </script>
+   ```
+
+   <Callout type="warning" emoji="⚠️">
+   请确保所有事件监听器都在 JavaScript 中绑定，而不是在 HTML 中内联绑定。这是良好的编程实践，有助于分离内容和行为。
+   </Callout>
+
+   测试和调试：
+
+   - 在浏览器中打开你的 HTML 文件，输入不同的数字和选择不同的操作，验证结果是否正确。
+   - 使用浏览器的开发者工具（F12）检查是否有任何错误。
+   - 确保对除以零等特殊情况进行了处理。
+
+   <Callout type="info">
+   <strong>提示：</strong> 如果遇到问题，使用 `console.log()` 在控制台中输出变量值，帮助调试代码。
+   </Callout>
+
+2. **第二步：天气小部件 (Weather Widget)**
+
+   **目标**：创建一个天气小部件，通过 AJAX 请求获取天气数据，并在页面上显示。
+
+   **功能要求**：
+   - 使用 AJAX 从指定的天气服务器获取 JSON 格式的天气数据。
+   - 显示以下信息：
+     - 位置：城市和州（城市使用 `<strong>` 标签包裹）。
+     - 湿度。
+     - 当前温度。
+     - 明天和后天的天气预报图片。
+   - 在页面加载时自动获取天气数据，并提供一个按钮手动刷新。
+
+   <Callout type="info">
+   <strong>提示：</strong>
+   - 使用 `XMLHttpRequest` 对象进行 AJAX 请求。
+   - 解析获取的 JSON 数据，并更新页面元素。
+   - 注意浏览器的同源策略，需要在支持 CORS 的环境下测试。
+   - 使用事件监听器在页面加载和按钮点击时调用获取天气的函数。
+   </Callout>
+
+   **实施步骤：**
+
+   **创建基础 HTML 文件：**
+
+   创建一个名为 `weather.html` 的文件。
+
+   **引入提供的 CSS 文件：**
+
+   ```html
+   <link rel="stylesheet" href="https://classes.engineering.wustl.edu/cse330/content/weather.css">
+   ```
+
+   **使用提供的 HTML 结构：**
+
+   ```html
+   <!DOCTYPE html>
+   <html>
+   <head>
+       <title>Weather Widget</title>
+       <link rel="stylesheet" href="https://classes.engineering.wustl.edu/cse330/content/weather.css">
+   </head>
+   <body>
+       <h1>Weather Widget</h1>
+       <div class="weather" id="weatherWidget">
+           <div class="weather-loc"></div>
+           <div class="weather-humidity"></div>
+           <div class="weather-temp"></div>
+           <img class="weather-tomorrow" />
+           <img class="weather-dayaftertomorrow" />
+       </div>
+       <button id="refreshButton">Refresh Weather</button>
+   </body>
+   </html>
+   ```
+
+   **编写 JavaScript 脚本：**
+
+   在页面底部添加 `<script>` 标签，或者链接外部的 `weather.js` 文件。
+
+   定义 `fetchWeather()` 函数，使用 `XMLHttpRequest` 对象进行 AJAX 请求。
+
+   ```javascript
+   <script>
+   document.addEventListener("DOMContentLoaded", function() {
+       function fetchWeather() {
+           var xhr = new XMLHttpRequest();
+           xhr.open('GET', 'https://classes.engineering.wustl.edu/cse330/content/weather_json.php', true);
+           xhr.onreadystatechange = function() {
+               if (xhr.readyState === 4) {
+                   if (xhr.status === 200) {
+                       var data = JSON.parse(xhr.responseText);
+                       updateWeatherWidget(data);
+                   } else {
+                       console.error('Error fetching weather data.');
+                   }
+               }
+           };
+           xhr.send();
+       }
+
+       function updateWeatherWidget(data) {
+           var locDiv = document.querySelector('.weather-loc');
+           var humidityDiv = document.querySelector('.weather-humidity');
+           var tempDiv = document.querySelector('.weather-temp');
+           var tomorrowImg = document.querySelector('.weather-tomorrow');
+           var dayAfterImg = document.querySelector('.weather-dayaftertomorrow');
+
+           // 更新位置
+           locDiv.innerHTML = '<strong>' + data.location.city + '</strong> ' + data.location.state;
+
+           // 更新湿度
+           humidityDiv.textContent = 'Humidity: ' + data.atmosphere.humidity + '%';
+
+           // 更新当前温度
+           tempDiv.textContent = 'Current Temperature: ' + data.current.temp;
+
+           // 更新天气预报图片
+           var tomorrowCode = data.tomorrow.code;
+           var dayAfterCode = data.dayafter.code;
+
+           var tomorrowImgUrl = 'http://us.yimg.com/i/us/nws/weather/gr/' + tomorrowCode + 'ds.png';
+           var dayAfterImgUrl = 'http://us.yimg.com/i/us/nws/weather/gr/' + dayAfterCode + 'ds.png';
+
+           tomorrowImg.src = tomorrowImgUrl;
+           dayAfterImg.src = dayAfterImgUrl;
+       }
+
+       // 页面加载时获取天气数据
+       fetchWeather();
+
+       // 点击按钮时刷新天气数据
+       var refreshButton = document.getElementById('refreshButton');
+       refreshButton.addEventListener('click', fetchWeather);
+   });
+   </script>
+   ```
+
+   <Callout type="warning" emoji="⚠️">
+   <strong>重要：</strong> 确保在支持 CORS 的环境下运行此代码，例如在本地主机或你的 EC2 实例上。浏览器可能会阻止跨域请求，导致无法获取数据。
+   </Callout>
+
+   **了解 JSON 数据结构：**
+
+   天气服务器返回的 JSON 数据结构：
+
+   ```json
+   {
+      "updated": "Thu, 11 Oct 2012 5:54 pm CDT",
+      "location": {
+         "city": "St. Louis",
+         "state": "MO"
+      },
+      "wind": { ... },
+      "atmosphere": { ... },
+      "current": { ... },
+      "tomorrow": {
+         "code": "29",
+         "text": "Clouds Early/Clearing Late",
+         "low": "45°F",
+         "high": "61°F"
+      },
+      "dayafter": {
+         "code": "30",
+         "text": "Partly Cloudy",
+         "low": "53°F",
+         "high": "65°F"
+      },
+      "credit": "..."
+   }
+   ```
+
+   需要特别关注 `location`、`atmosphere`、`current`、`tomorrow` 和 `dayafter` 部分。
+
+   **处理天气预报图片：**
+
+   每个预报都有一个代码 `code`，对应的图片 URL 为：
+
+   ```
+   http://us.yimg.com/i/us/nws/weather/gr/##ds.png
+   ```
+
+   将 `##` 替换为对应的代码。
+
+   例如，如果 `code` 为 `29`，则图片 URL 为：
+
+   ```
+   http://us.yimg.com/i/us/nws/weather/gr/29ds.png
+   ```
+
+   **测试和调试：**
+
+   - 在浏览器中打开 `weather.html`，检查是否正确显示天气信息和图片。
+   - 使用浏览器的开发者工具查看是否有任何错误，特别是网络请求是否成功。
+   - 如果无法获取数据，检查是否存在跨域请求的问题。
+
+   <Callout type="info">
+   <strong>提示：</strong> 如果遇到跨域请求的问题，可以考虑在本地搭建一个简单的服务器，或者使用浏览器的插件绕过 CORS 限制，但这些只是用于开发测试，生产环境下需要正确配置服务器。
+   </Callout>
+
+   **优化和改进：**
+
+   - 添加错误处理，如果请求失败，向用户显示错误消息。
+   - 考虑使用 `fetch` API 或第三方库（如 Axios）简化 AJAX 请求。
+   - 增加加载动画，表示数据正在获取中。
+
+   <Callout type="info">
+   <strong>拓展练习：</strong> 试着让用户输入城市名称，获取指定城市的天气信息。这将需要修改请求的 URL，并处理更多的用户输入。
+   </Callout>
+</Steps>
+
+<Callout type="info">
+<strong>推荐阅读：</strong> 为了更好地理解 AJAX 和异步编程，建议阅读 MDN 上的[AJAX 入门教程](https://developer.mozilla.org/zh-CN/docs/AJAX/Getting_Started)。
+</Callout>
+
+## 个人项目评分标准 (Grading)
+
+<Callout type="warning">
+所有作业（包括代码）必须在截止日期前提交到 GitHub（尽早并频繁提交）。未在截止日期前提交将导致 0 分。
+
+如果未在各自的 `README.md` 中包含运行在您的实例上的个人和小组部分的链接，您将因缺少部分而获得 0 分。
+</Callout>
+
+### JavaScript Calculator (10 分)
+
+**成功实现加、减、乘、除运算（3 分）**
+
+- 计算器能够正确执行加、减、乘、除四则运算。
+
+**自动计算结果（3 分）**
+
+- 当任一输入字段的值发生变化时，结果会自动更新，无需刷新页面。
+
+**使用纯粹、常规的 JavaScript 编写，无外部库（4 分）**
+
+- 计算器完全使用原生 JavaScript 实现，没有使用任何外部库。
+
+<Callout type="warning">
+**注意**：请确保完全分离内容、外观和行为。这意味着您不应在 HTML 元素上使用诸如 `onclick`、`onchange` 和 `onkeyup` 之类的事件属性。
+</Callout>
+
+### Weather Widget (15 分)
+
+**执行 AJAX 请求以获取当前天气（4 分）**
+
+- 小部件能够成功向天气服务器发送 AJAX 请求并获取数据。
+
+**HTML 模板正确填充信息，包括图片（4 分）**
+
+- 显示的位置、湿度、当前温度以及明天和后天的天气预报图片均正确无误。
+
+**刷新按钮（2 分）**
+
+- 提供一个按钮，用户点击后可以手动刷新天气信息。
+
+**使用纯粹、常规的 JavaScript 编写，无外部库（5 分）**
+
+- 天气小部件完全使用原生 JavaScript 实现，没有使用任何外部库。
+
+<Callout type="warning">
+确保在 JavaScript 中绑定事件监听器，而不是在 HTML 中使用内联事件处理程序。这是良好的编程实践，有助于分离内容和行为。
+</Callout>

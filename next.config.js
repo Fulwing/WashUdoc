@@ -1,6 +1,14 @@
 const withNextra = require('nextra')({
     theme: 'nextra-theme-docs',
-    themeConfig: './theme.config.jsx'
+    themeConfig: './theme.config.jsx',
+    latex: {
+        renderer: 'katex',
+        // options: {
+        //   macros: {
+        //     '\\RR': '\\mathbb{R}'
+        //   }
+        // }
+      }
 })
 
 module.exports = withNextra()

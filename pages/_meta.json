@@ -17,6 +17,11 @@
         "type": "page",
         "display": "hidden"
     },
+    "CSE347": {
+        "title": "CSE347",
+        "type": "page",
+        "display": "hidden"
+    },
     "CSE442": {
         "title": "CSE442",
         "type": "page",

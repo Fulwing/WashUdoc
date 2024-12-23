@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+, "pages/classeselection/_meta.js", "pages/CSE247/_meta.js", "pages/CSE330/modules/_meta.js", "pages/CSE330/_meta.js", "pages/CSE442/_meta.js", "pages/Math429/_meta.js", "pages/Math3200/_meta.js", "pages/Math4111/_meta.js", "pages/_meta.js"  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
